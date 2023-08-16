@@ -1,0 +1,36 @@
+body{
+    background: #0F2027;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+header{
+    text-align: center;
+    color: whitesmoke;
+    width: 80%;
+    margin: auto;
+}
+hr{
+    border-color: rgb(4, 0, 255);
+}
+
+select{
+    text-align: center;
+}
+
+.formulario{
+    width: 60%;
+    margin:auto;
+    border: 2px groove white;
+    border-radius: 10px;
+    text-align: center;
+    background-color:cadetblue;
+    padding: 2%;
+}
+
+.aprobado{
+    background-color: green;
+}
+.desaprobado{
+    background-color: red;
+}
