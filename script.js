@@ -1,50 +1,111 @@
-input_fecha = document.querySelector("#input-date");
-input_vehiculo = document.querySelector("#input-vehiculo");
-input_test = document.querySelector("#input-test");
-input_excusa = document.querySelector("#input-excusa");
-input_submit = document.querySelector("#input-submit");
-label_test = document.querySelector("#test-alcoholemia");
-div_formulario = document.querySelector(".formulario");
 
-gramos_por_litro = Math.random() * 3;
-gramos_por_litro = gramos_por_litro.toFixed(2);
+const div_productos = document.querySelector(".productos");
+const contador_carrito = document.querySelector("#contador-productos");
 
-function test_alcoholemia() {
-  input_test.remove(); //borramos el boton
-  parrafo_gramos_por_litro = document.createElement("p"); //creamos un parrafo y lo guardamos en una variable
-  parrafo_gramos_por_litro.innerHTML =
-    "El test dió: " + gramos_por_litro + " g/l de alcohol en sangre"; //le agregamos contenido
-  label_test.appendChild(parrafo_gramos_por_litro); //metemos el elemento en el documento
+let product_count = 0;
+
+// Contador de carrito
+let compras = [];
+
+function agregar(prod) {
+  compras.push(prod);
+  actualizar();
 }
 
-function mostrar_resultado(aprobado){
-    resultado = document.createElement("h2")
-    if (aprobado){
-        resultado.innerHTML = "Podes manejar"
-        div_formulario.classList.add("aprobado")
-    }
-    else{
-        resultado.innerHTML = "No podes manejar"
-        div_formulario.classList.add("desaprobado")
-    }
-    div_formulario.appendChild(resultado)
-}
-function chequear_idoneidad(){
-    input_submit.remove()
-    año = input_fecha.value.split("-")[0]
-    vehiculo = input_vehiculo.value
-   if (año > 2022 && gramos_por_litro > 0 )
-{  mostrar_resultado(false)}
-else if(año < 2022 && gramos_por_litro > 0.5)
-{  mostrar_resultado(false)}
-else if(gramos_por_litro > 0.2 && vehiculo == 2)
-{  mostrar_resultado(false)}
-else if(gramos_por_litro < 0.2 && vehiculo == 2)
-{  mostrar_resultado(true)}
-else (gramos_por_litro < 0.5 && vehiculo = 1 || vehiculo = 3 || vehiculo = 4 )
-{  mostrar_resultado(true)}
+function sacar(prod) {
+  const indice = compras.indexOf(prod);
+  compras.splice(indice, 1);
+  actualizar();
 }
 
+function actualizar() {
+  contador_carrito.innerText = compras.length;
+}
 
-input_test.addEventListener("click", test_alcoholemia);
-input_submit.addEventListener("click", chequear_idoneidad);
+// Fin de contador
+
+class Producto {
+  constructor(nombre, precio, imagen) {
+    this.id = product_count++;
+    this.nombre = nombre;
+    this.precio = precio;
+    this.imagen = imagen;
+    this.#crear();
+    this.#agregar_eventos();
+  }
+
+  #crear() {
+    this.tags ='<div class="col-3">'+
+      '<div class="card producto mx-3 my-3" style="width: 18rem; height:20rem">' +
+      `<img src="${this.imagen}" class="card-img-top" style= "height: 168px" alt="...">` +
+      '<div class="card-body">' +
+      `<p class="card-text">${this.nombre}</p>` +
+      `<p class="card-text">$${this.precio}</p>` +
+      '<button class="btn btn-success">Añadir al carrito <i class="fa-solid fa-cart-shopping fa-l" style="color: #ffffff;"></i></button>' +
+      "</div>" +
+      "</div>"+
+      "</div>";
+
+    this.div = document.createElement("div");
+    this.div.innerHTML = this.tags;
+    div_productos.appendChild(this.div);
+  }
+
+  #agregar_eventos() {
+    this.div.querySelector("button").addEventListener("click", () => {
+      agregar(this);
+      renderizarCompras();
+    });
+  }
+}
+
+// Funciones
+function renderizarCompras() {
+  offcanva.innerHTML = "";
+  for (const c of compras) {
+    const item = document.createElement("div");
+    item.innerText = c.nombre + "  " + c.precio
+    offcanva.appendChild(item);
+  }
+}
+
+// Ejecuciones
+var nombres_productos = [
+    ["Hilux Cabina Doble DX 4x2", "14.318.000", "./img/hilux4x2.jpeg"],
+    ["Jeep Gladiator Overland", "USD108.400", "./img/WhatsApp Image 2023-09-29 at 8.47.39 PM.jpeg"],
+    ["Toyota Corolla 2023", "18.500.000", "./img/toyota-corolla-2023.jpg"],
+    ["Ford Mustang GT", "USD45,000", "./img/critica-ford-mustang-gt-2020.jpg"],
+    ["Honda Civic Sedan", "16.200.000", "./img/honda civic.jpeg"],
+    ["Chevrolet Silverado 1500", "USD35,000", "./img/2024-chevrolet-silverado-1500-high-country-102-642dbddbe725d.jpg"],
+    ["Nissan Altima", "15.500.000", "./img/2010-nissan-altima-sedan-review-car-and-driver-photo-300908-s-original.jpg"],
+    ["Mercedes-Benz C-Class", "USD50,000", "./img/mercedes c-class.jpeg"],
+    ["Volkswagen Golf GTI", "20.000.000", "./img/golf.jpg"],
+    ["Audi Q5", "USD55,000", "./img/audi_q5_sportback_45_tfsi_quattro_s_line_15_067e04660a1906ba.jpg"],
+    ["Mazda CX-5", "17.800.000", "./img/mazda-mexico-cx-5-vlp-versiones-signature-v1.png"],
+    ["BMW 3 Series", "USD48,000", "./img/bmw 3 series.jpeg"],
+    ["Hyundai Sonata", "16.500.000", "./img/hyundai sonata.jpeg"],
+    ["Tesla Model 3", "USD42,000", "./img/tesla model 3.jpeg"],
+    ["Subaru Outback", "19.000.000", "./img/ALL_NEW_OUTBACK-touring-ice_silver-front.png"],
+    ["Lexus RX 350", "USD52,000", "./img/lexus.jpg"],
+    ["Kia Sportage", "15.000.000", "./img/kia sporetage.jpeg"],
+    ["Porsche 911", "USD110,000", "./img/porsche 911.jpeg"],
+    ["Ford Escape", "16.800.000", "./img/ford escape.jpeg"],
+    ["Chevrolet Camaro", "USD38,000", "./img/camaro.jpeg"],
+    ["Acura MDX", "USD60,000", "./img/acura mdx.jpeg"]
+    // Puedes seguir añadiendo más elementos según tus necesidades
+  ];
+
+const productos = [];
+for (const p of nombres_productos) {
+  const n_prod = new Producto(p[0], p[1], p[2]);
+  productos.push(n_prod);
+}
+
+// Botón de compras
+const boton_compra = document.querySelector("#botoncompras");
+boton_compra.addEventListener("click", () => {
+  renderizarCompras();
+});
+
+// Offcanvas
+const offcanva = document.querySelector(".offcanvas-body");
