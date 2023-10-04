@@ -1,8 +1,12 @@
-
+const btnDark = document.querySelector("#btnDark");
+const html = document.querySelector("html");
 const div_productos = document.querySelector(".productos");
 const contador_carrito = document.querySelector("#contador-productos");
-
 let product_count = 0;
+
+btnDark.addEventListener("click", () => {
+  html.dataset.bsTheme = html.dataset.bsTheme === "dark" ? "light" : "dark";
+});
 
 // Contador de carrito
 let compras = [];
